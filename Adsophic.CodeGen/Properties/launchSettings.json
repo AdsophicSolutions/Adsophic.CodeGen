@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Adsophic.CodeGen": {
+      "commandName": "Project",
+      "commandLineArgs": "-d \"C:\\projects\\data\\codegenschema\\schema2.json\" -o \"C:\\projects\\data\\codegenschema\\output\""
+    }
+  }
+}

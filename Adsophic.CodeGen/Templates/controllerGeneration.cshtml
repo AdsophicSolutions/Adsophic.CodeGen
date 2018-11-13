@@ -1,0 +1,46 @@
+﻿@model Adsophic.CodeGen.Models.ClassDefinition
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+
+namespace @Model.Namespace
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class @Model.ControllerName : ControllerBase
+    {
+        // GET api/values
+        [HttpGet]
+        public ActionResult<IEnumerable<@Model.ClassName>> Get()
+        {
+            return new @Model.ClassName [0];
+        }
+
+        // GET api/values/5
+        [HttpGet("{id}")]
+        public ActionResult<@Model.ClassName> Get(int id)
+        {
+            return new @Model.ClassName ();
+        }
+
+        // POST api/values
+        [HttpPost]
+        public void Post([FromBody] @Model.ClassName value)
+        {
+        }
+
+        // PUT api/values/5
+        [HttpPut("{id}")]
+        public void Put(int id, [FromBody] @Model.ClassName value)
+        {
+        }
+
+        // DELETE api/values/5
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
+        }
+    }
+}

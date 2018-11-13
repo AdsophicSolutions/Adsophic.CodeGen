@@ -8,10 +8,12 @@
 
   <ItemGroup>
     <None Remove="Templates\classGeneration.cshtml" />
+    <None Remove="Templates\controllerGeneration.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Templates\classGeneration.cshtml" />
+    <EmbeddedResource Include="Templates\controllerGeneration.cshtml" />
   </ItemGroup>
 
   <ItemGroup>

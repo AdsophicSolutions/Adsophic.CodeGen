@@ -20,7 +20,9 @@ namespace Adsophic.CodeGen.Testing
 
             var classDefinition = new ClassDefinition
             {
-                ClassName = "MyTestClass"
+                ClassName = "MyTestClass",
+                Namespace = "Adsophic.Autogeneration"
+                
             };
             classDefinition.Properties = new PropertyDefinition[]
             {
@@ -45,7 +47,8 @@ namespace Adsophic.CodeGen.Testing
             Console.WriteLine("One class finished. Starting another");
             classDefinition = new ClassDefinition
             {
-                ClassName = "MyOtherClass"
+                ClassName = "MyOtherClass",
+                Namespace = "Adsophic.Autogeneration"
             };
             classDefinition.Properties = new PropertyDefinition[]
             {

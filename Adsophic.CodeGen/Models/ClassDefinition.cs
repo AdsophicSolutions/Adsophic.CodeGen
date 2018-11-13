@@ -12,6 +12,9 @@ namespace Adsophic.CodeGen.Models
     public class ClassDefinition
     {
         public string ClassName { get; set; }
+        public string ControllerName => $"{ClassName}Controller";
+        public string Namespace { get; set; }
+        public bool GenerateController { get; set; }
         public IEnumerable<PropertyDefinition> Properties { get; set; }
         public IEnumerable<MethodDefinition> Methods { get; set; }
     }

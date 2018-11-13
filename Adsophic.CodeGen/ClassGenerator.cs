@@ -22,12 +22,14 @@ namespace Adsophic.CodeGen
         private static Lazy<ClassGenerator> instance = new Lazy<ClassGenerator>(() => new ClassGenerator());
         public static ClassGenerator Instance { get { return instance.Value; } }
 
-        public void Generate(SchemaDefinition schemaDefinition, string outputhPath)
+        public void Generate(SchemaDefinition schemaDefinition, string outputPath)
         {
             if((schemaDefinition.ClassDefinitions?.Count() ?? 0) == 0) return;
             foreach(var classDefinition in schemaDefinition.ClassDefinitions)
             {
-                GenerateClass(classDefinition, outputhPath);
+                GenerateClass(classDefinition, outputPath);
+                if (classDefinition.GenerateController)
+                    GenerateController(classDefinition, outputPath);
             }
         }
 
@@ -35,7 +37,7 @@ namespace Adsophic.CodeGen
         {
             Task.Run(async () =>
             {
-                string classString = await Generate(classDefinition);
+                string classString = await Generate(classDefinition, TemplateType.Class);
                 Console.WriteLine($"Started writing class {classDefinition.ClassName} to " +
                     $"{(string.IsNullOrEmpty(outputPath) ? "current directory" : outputPath)}");                
                 File.WriteAllText(Path.Combine(outputPath, $"{classDefinition.ClassName}.cs"), classString);
@@ -44,10 +46,23 @@ namespace Adsophic.CodeGen
             }).Wait();
         }
 
-        private async Task<string> Generate(ClassDefinition definition)
+        public void GenerateController(ClassDefinition classDefinition, string outputPath)
+        {
+            Task.Run(async () =>
+            {
+                string controllerString = await Generate(classDefinition, TemplateType.Controller);
+                Console.WriteLine($"Started writing controller {classDefinition.ControllerName} to " +
+                    $"{(string.IsNullOrEmpty(outputPath) ? "current directory" : outputPath)}");
+                File.WriteAllText(Path.Combine(outputPath, $"{classDefinition.ControllerName}.cs"), controllerString);
+                Console.WriteLine($"Completed writing controller {classDefinition.ControllerName} to " +
+                    $"{(string.IsNullOrEmpty(outputPath) ? "current directory" : outputPath)}");
+            }).Wait();
+        }
+
+        private async Task<string> Generate(ClassDefinition definition, TemplateType templateType)
         {
             // Try to find template.
-            var cached = engine.TemplateCache.RetrieveTemplate(TemplateType.Class.ToString());
+            var cached = engine.TemplateCache.RetrieveTemplate(templateType.ToString());
             if (cached.Success)
             {
                 // If template exists render template
@@ -55,8 +70,8 @@ namespace Adsophic.CodeGen
             }
 
             // Compile and generate template
-            return await engine.CompileRenderAsync(TemplateType.Class.ToString(),
-                templateDefinitions[TemplateType.Class], definition);
+            return await engine.CompileRenderAsync(templateType.ToString(),
+                templateDefinitions[templateType], definition);
         }
 
         private void Initialize()
@@ -69,6 +84,8 @@ namespace Adsophic.CodeGen
 
             templateDefinitions.Add(TemplateType.Class, 
                 GetResourceAsString("Adsophic.CodeGen.Templates.classGeneration.cshtml"));
+            templateDefinitions.Add(TemplateType.Controller,
+                GetResourceAsString("Adsophic.CodeGen.Templates.controllerGeneration.cshtml"));
         }
                 
         private static string GetResourceAsString(string resourceName)
@@ -92,7 +109,8 @@ namespace Adsophic.CodeGen
 
         internal enum TemplateType
         {
-            Class
+            Class,
+            Controller
         }
     }
 }

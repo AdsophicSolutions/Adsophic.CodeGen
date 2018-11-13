@@ -1,29 +1,33 @@
 ﻿@model Adsophic.CodeGen.Models.ClassDefinition
+namespace @Model.Namespace
+{
 public class @Model.ClassName
 {
-@if (@Model.Properties != null)
-{
-@foreach (var property in @Model.Properties)
-{
-     @:public @property.PropertyType @property.Name { get; set; }
-}
-}
+    @if (@Model.Properties != null)
+    {
+        @foreach (var property in @Model.Properties)
+        {
+            @:public @property.PropertyType @property.Name { get; set; }
+        }
+    }
 
-@if (@Model.Methods != null)
-{
-@foreach (var method in @Model.Methods)
-{
-    @:public @method.ReturnType @method.MethodName (    
-         @if(method.Parameters != null) {
-             foreach (var parameter in method.Parameters)
-             {
-          @: @parameter.ParameterType @parameter.VariableName ,
-             }
-         }
-    @:)
-    @:{
-    @:}
+    @if (@Model.Methods != null)
+    {
+        @foreach (var method in @Model.Methods)
+        {
+            @:public @method.ReturnType @method.MethodName (
+            @if (method.Parameters != null)
+            {
+                foreach (var parameter in method.Parameters)
+                {
+                    @: @parameter.ParameterType @parameter.VariableName ,
+                }
+            }
+            @:)
+            @:{
+            @:}
 
-}
-}
+        }
+    }
+    }
 }

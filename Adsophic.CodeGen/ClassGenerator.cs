@@ -1,4 +1,5 @@
-﻿using Adsophic.CodeGen.Models;
+﻿using Adsophic.CodeGen.API;
+using Adsophic.CodeGen.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,13 +14,15 @@ namespace Adsophic.CodeGen
     {
         private RazorLight.RazorLightEngine engine;
         private Dictionary<TemplateType, string> templateDefinitions = new Dictionary<TemplateType, string>();
+        private ICodeFormatter codeFormatter;
 
-        private ClassGenerator()
+        private ClassGenerator(ICodeFormatter codeFormatter)
         {
             Initialize();
+            this.codeFormatter = codeFormatter;
         }
 
-        private static Lazy<ClassGenerator> instance = new Lazy<ClassGenerator>(() => new ClassGenerator());
+        private static Lazy<ClassGenerator> instance = new Lazy<ClassGenerator>(() => new ClassGenerator(new CodeFormatter()));
         public static ClassGenerator Instance { get { return instance.Value; } }
 
         public void Generate(SchemaDefinition schemaDefinition, string outputPath)
@@ -39,8 +42,10 @@ namespace Adsophic.CodeGen
             {
                 string classString = await Generate(classDefinition, TemplateType.Class);
                 Console.WriteLine($"Started writing class {classDefinition.ClassName} to " +
-                    $"{(string.IsNullOrEmpty(outputPath) ? "current directory" : outputPath)}");                
+                    $"{(string.IsNullOrEmpty(outputPath) ? "current directory" : outputPath)}");
+                if (codeFormatter != null) classString = codeFormatter.Format(classString);
                 File.WriteAllText(Path.Combine(outputPath, $"{classDefinition.ClassName}.cs"), classString);
+                
                 Console.WriteLine($"Completed writing class {classDefinition.ClassName} to " +
                     $"{(string.IsNullOrEmpty(outputPath) ? "current directory" : outputPath)}");
             }).Wait();
@@ -53,6 +58,7 @@ namespace Adsophic.CodeGen
                 string controllerString = await Generate(classDefinition, TemplateType.Controller);
                 Console.WriteLine($"Started writing controller {classDefinition.ControllerName} to " +
                     $"{(string.IsNullOrEmpty(outputPath) ? "current directory" : outputPath)}");
+                if (codeFormatter != null) controllerString = codeFormatter.Format(controllerString);
                 File.WriteAllText(Path.Combine(outputPath, $"{classDefinition.ControllerName}.cs"), controllerString);
                 Console.WriteLine($"Completed writing controller {classDefinition.ControllerName} to " +
                     $"{(string.IsNullOrEmpty(outputPath) ? "current directory" : outputPath)}");

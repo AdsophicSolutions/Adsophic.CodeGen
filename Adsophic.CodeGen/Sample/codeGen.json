@@ -1,0 +1,55 @@
+{
+  "ClassDefinitions": [
+    {
+      "ClassName": "MyTestClass",
+      "ControllerName": "MyTestClassController",
+      "Namespace": "Adsophic.Autogeneration",
+      "GenerateController": true,
+      "Properties": [
+        {
+          "PropertyType": "string",
+          "Name": "FirstName"
+        },
+        {
+          "PropertyType": "string",
+          "Name": "LastName"
+        },
+        {
+          "PropertyType": "string",
+          "Name": "Digits"
+        }
+      ],
+      "Methods": [
+        {
+          "MethodName": "MyTestMethod",
+          "ReturnType": "string",
+          "Parameters": [
+            {
+              "ParameterType": "string",
+              "VariableName": "mystring"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ClassName": "MyOtherClass",
+      "ControllerName": "MyOtherClassController",
+      "Namespace": "Adsophic.Autogeneration",
+      "GenerateController": true,
+      "Properties": [
+        {
+          "PropertyType": "string",
+          "Name": "FirstName"
+        },
+        {
+          "PropertyType": "int",
+          "Name": "Digits"
+        }
+      ],
+      "Methods": null
+    }
+  ]
+} {
+
+}

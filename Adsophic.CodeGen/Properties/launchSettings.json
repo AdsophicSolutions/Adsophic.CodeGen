@@ -2,7 +2,7 @@
   "profiles": {
     "Adsophic.CodeGen": {
       "commandName": "Project",
-      "commandLineArgs": "-d \"D:\\projects\\temp\\testCodeGen.json\" -o \"D:\\projects\\temp\""
+      "commandLineArgs": "-d \"C:\\Users\\rahul\\source\\repos\\Adsophic.CodeGen\\Adsophic.CodeGen\\Sample\\codeGen.json\" -o \"D:\\projects\\codegeneration\""
     }
   }
 }

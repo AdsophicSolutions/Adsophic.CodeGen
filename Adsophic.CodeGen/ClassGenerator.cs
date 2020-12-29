@@ -13,8 +13,8 @@ namespace Adsophic.CodeGen
     public class ClassGenerator
     {
         private RazorLight.RazorLightEngine engine;
-        private Dictionary<TemplateType, string> templateDefinitions = new Dictionary<TemplateType, string>();
-        private ICodeFormatter codeFormatter;
+        private readonly Dictionary<TemplateType, string> templateDefinitions = new Dictionary<TemplateType, string>();
+        private readonly ICodeFormatter codeFormatter;
 
         private ClassGenerator(ICodeFormatter codeFormatter)
         {
@@ -22,7 +22,7 @@ namespace Adsophic.CodeGen
             this.codeFormatter = codeFormatter;
         }
 
-        private static Lazy<ClassGenerator> instance = new Lazy<ClassGenerator>(() => new ClassGenerator(new CodeFormatter()));
+        private static readonly Lazy<ClassGenerator> instance = new Lazy<ClassGenerator>(() => new ClassGenerator(new CodeFormatter()));
         public static ClassGenerator Instance { get { return instance.Value; } }
 
         public void Generate(SchemaDefinition schemaDefinition, string outputPath)
